@@ -21,13 +21,6 @@ namespace GeniusIdiotConsoleApp
             questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
             questions.Add(new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60));
             questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            questions.Add(new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60));
-            questions.Add(new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60));
-            questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
-
             return questions;
         }
         static string GetDiagnosis(int countRigthAnswers, int countQuestions) //Доп. задача 1 - изменена функция
