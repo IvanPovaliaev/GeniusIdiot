@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace GeniusIdiotConsoleApp
 {
-    internal partial class Program
+    internal class Program
     {
         static List<Question> GetQuestions()
         {
