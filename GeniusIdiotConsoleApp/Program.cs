@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 /*
-    Добавить возможность вычисления диагноза для любого количества вопросов.
-    Сделать метод универсальным, то есть при добавлении нового вопроса, метод вычисления диагноза не меняется.
-    Количество диагнозов также не меняется.
-    Разработать правило, по которому ставятся диагнозы.
+    Сделать хранение результатов игры.
+    Результаты хранятся даже после перезапуска приложения.
+    Сделать возможность отображения всех результатов тестирования в формате таблицы с заголовком:
+    ФИО кол-во правильных ответ Диагноз.
 */
 
 namespace GeniusIdiotConsoleApp
 {
-    internal class Program
+    internal partial class Program
     {
         static List<Question> GetQuestions()
         {
@@ -40,7 +40,7 @@ namespace GeniusIdiotConsoleApp
             if (percentRightAnswers < 70) return diagnoses[3];
             if (percentRightAnswers < 90) return diagnoses[4];
             return diagnoses[5];
-        }
+        } 
 
         static void Main()
         {
@@ -69,6 +69,11 @@ namespace GeniusIdiotConsoleApp
                 Console.WriteLine($"Пользователь {username}");
                 Console.WriteLine($"Количество правильных ответов: {countRigthAnswers}");
                 Console.WriteLine($"Ваш диагноз: {diagnosis}");
+
+                ResultTable.SaveResult(username, countRigthAnswers, diagnosis); //сохранение результатов в отдельный файл
+                Console.WriteLine("\nХотите посмотреть таблицу результатов? (Если да, то введите \"да\". Иначе - любую иную фразу)");
+                if (Console.ReadLine().ToLower() == "да") ResultTable.ShowResults();
+
                 Console.WriteLine("\nТест завершён. Хотите пройти тест заново?(Введите да/нет)");
                 
                 //цикл вопроса о повторении
