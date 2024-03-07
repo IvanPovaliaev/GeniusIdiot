@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace GeniusIdiotConsoleApp
 {
@@ -13,7 +11,7 @@ namespace GeniusIdiotConsoleApp
         private static string filePath { get; } = @".\TestResults\TestResults.txt";
         public static IEnumerable<User> GetUsersResults()
         {
-            var lines = FileManager.GetContent(filePath).Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries);
+            var lines = FileManager.GetContent(filePath).Split(new string[] {"\n", "\r"}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var userResult in lines)
             {
                 var userInfo = userResult.Split(new string[] { "|||||" }, StringSplitOptions.RemoveEmptyEntries);
