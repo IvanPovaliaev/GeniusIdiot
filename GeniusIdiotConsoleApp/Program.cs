@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 /*
-    Прочитать про var и использовать в проекте.
+    В качестве бонусного задания, можно немного разделить логику работы программы.
+    Выделить класс для работы с файловой системой и класс для работы с консолью(опционально)
 */
 
 namespace GeniusIdiotConsoleApp
@@ -38,11 +40,10 @@ namespace GeniusIdiotConsoleApp
             if (percentRightAnswers < 90) return diagnoses[4];
             return diagnoses[5];
         } 
-        static void StartTest(string username)
+        static void StartTest(User user)
         {
             Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
             var questions = GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов          
-            var countRigthAnswers = 0;
             var countQuestions = questions.Count(); //Для доп. задачи определяем количество вопросов
 
             for (int i = 0; i < countQuestions; i++)
@@ -52,17 +53,17 @@ namespace GeniusIdiotConsoleApp
                 var userAnswer = Console.ReadLine();
                 if (int.TryParse(userAnswer, out _)) //добавил для случая некорректного ввода ответа
                 {
-                    if (int.Parse(userAnswer) == questions[i].Answer) countRigthAnswers++;
+                    if (int.Parse(userAnswer) == questions[i].Answer) user.IncreaseRightAnswers();
                 }
             }
 
-            var diagnosis = GetDiagnosis(countRigthAnswers, countQuestions);
+            user.Diagnosis = GetDiagnosis(user.CountRightAnswers, countQuestions);
 
-            Console.WriteLine($"Пользователь {username}");
-            Console.WriteLine($"Количество правильных ответов: {countRigthAnswers}");
-            Console.WriteLine($"Ваш диагноз: {diagnosis}");
+            Console.WriteLine($"Пользователь {user.Name}");
+            Console.WriteLine($"Количество правильных ответов: {user.CountRightAnswers}");
+            Console.WriteLine($"Ваш диагноз: {user.Diagnosis}");
 
-            ResultTable.SaveResult(username, countRigthAnswers, diagnosis); //сохранение результатов в отдельный файл
+            ResultTable.SaveResult(user.Name, user.CountRightAnswers, user.Diagnosis); //сохранение результатов в отдельный файл
         }
         /// <summary>
         /// Возвращает булевое значение о повторе теста
@@ -87,12 +88,12 @@ namespace GeniusIdiotConsoleApp
         static void Main()
         {
             Console.WriteLine("Введите имя пользователя:");
-            var username = Console.ReadLine();
+            var user = new User(Console.ReadLine());
             
             //цикл прохождения теста
             while (true)
             {
-                StartTest(username);
+                StartTest(user);
                 Console.WriteLine("\nХотите посмотреть таблицу результатов? (Введите да/нет)");
                 if (GetUserRepeatAnswer())
                 {
