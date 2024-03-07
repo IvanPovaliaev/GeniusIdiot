@@ -17,6 +17,12 @@ namespace GeniusIdiotConsoleApp
             CountRightAnswers = 0;
             Diagnosis = "Идиот";
         }
+        public User(string Name, int CountRightAnswers, string Diagnosis)
+        {
+            this.Name = Name;
+            this.CountRightAnswers = CountRightAnswers;
+            this.Diagnosis = Diagnosis;
+        }
         public void IncreaseRightAnswers() => CountRightAnswers++;               
     }
 }

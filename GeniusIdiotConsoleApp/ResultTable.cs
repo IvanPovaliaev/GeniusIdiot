@@ -13,15 +13,6 @@ namespace GeniusIdiotConsoleApp
         {
             if (!resultDirectory.Exists) resultDirectory.Create();
         }
-        public static void SaveResult(string username, int countRigthAnswers, string diagnosis)
-        {
-            CreateResults();
-            var result = $"{username}|||||{countRigthAnswers}|||||{diagnosis}";
-            using (var sw = new StreamWriter(resultFilePath, true, System.Text.Encoding.Default))
-            {
-                sw.WriteLine(result);
-            }
-        }
         public static void ShowResults()
         {
             CreateResults();

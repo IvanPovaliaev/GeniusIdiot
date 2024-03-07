@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 
@@ -12,16 +11,6 @@ namespace GeniusIdiotConsoleApp
 {
     internal class Program
     {
-        static List<Question> GetQuestions()
-        {
-            var questions = new List<Question>();
-            questions.Add(new Question("Сколько будет два плюс два умноженное на два?", 6));
-            questions.Add(new Question("Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?", 9));
-            questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
-            questions.Add(new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            return questions;
-        }
         static string GetDiagnosis(int countRigthAnswers, int countQuestions) //Доп. задача 1 - изменена функция
         {
             var diagnoses = new string[6];
@@ -43,10 +32,10 @@ namespace GeniusIdiotConsoleApp
         static void StartTest(User user)
         {
             Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
-            var questions = GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов          
-            var countQuestions = questions.Count(); //Для доп. задачи определяем количество вопросов
 
-            for (int i = 0; i < countQuestions; i++)
+            var questions = QuestionsStorage.GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов          
+
+            for (int i = 0; i < questions.Count(); i++)
             {
                 Console.WriteLine($"Вопрос №{i + 1}");
                 Console.WriteLine($"{questions[i].QuestionText}");
@@ -57,13 +46,13 @@ namespace GeniusIdiotConsoleApp
                 }
             }
 
-            user.Diagnosis = GetDiagnosis(user.CountRightAnswers, countQuestions);
+            user.Diagnosis = GetDiagnosis(user.CountRightAnswers, questions.Count());
 
             Console.WriteLine($"Пользователь {user.Name}");
             Console.WriteLine($"Количество правильных ответов: {user.CountRightAnswers}");
             Console.WriteLine($"Ваш диагноз: {user.Diagnosis}");
 
-            ResultTable.SaveResult(user.Name, user.CountRightAnswers, user.Diagnosis); //сохранение результатов в отдельный файл
+            UserStorage.SaveUsersResult(user); //сохранение результатов в отдельный файл
         }
         /// <summary>
         /// Возвращает булевое значение о повторе теста
@@ -88,8 +77,7 @@ namespace GeniusIdiotConsoleApp
         static void Main()
         {
             Console.WriteLine("Введите имя пользователя:");
-            var user = new User(Console.ReadLine());
-            
+            var user = new User(Console.ReadLine());            
             //цикл прохождения теста
             while (true)
             {
