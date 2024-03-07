@@ -40,6 +40,7 @@ namespace GeniusIdiotConsoleApp
         } 
         static void StartTest(string username)
         {
+            Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
             var questions = GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов          
             var countRigthAnswers = 0;
             var countQuestions = questions.Count(); //Для доп. задачи определяем количество вопросов
@@ -78,7 +79,6 @@ namespace GeniusIdiotConsoleApp
                     continue;
                 }
                 if (userRepeatAnswer == "нет") testRepeat = false;
-                else Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
                 break;
             }
             return testRepeat;
@@ -93,8 +93,13 @@ namespace GeniusIdiotConsoleApp
             while (true)
             {
                 StartTest(username);
-                Console.WriteLine("\nХотите посмотреть таблицу результатов? (Если да, то введите \"да\". Иначе - любую иную фразу)");
-                if (Console.ReadLine().ToLower() == "да") ResultTable.ShowResults();
+                Console.WriteLine("\nХотите посмотреть таблицу результатов? (Введите да/нет)");
+                if (GetUserRepeatAnswer())
+                {
+                    ResultTable.ShowResults();
+                    Console.WriteLine("\nХотите очистить таблицу результатов? (Введите да/нет)");
+                    if(GetUserRepeatAnswer()) ResultTable.ClearResults();                    
+                }
 
                 Console.WriteLine("\nТест завершён. Хотите пройти тест заново?(Введите да/нет)");
                 if (!GetUserRepeatAnswer()) break;               

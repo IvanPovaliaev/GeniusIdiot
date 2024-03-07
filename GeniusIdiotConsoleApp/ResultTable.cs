@@ -35,6 +35,6 @@ namespace GeniusIdiotConsoleApp
                 Console.WriteLine($"|| {userResult[0],-15} || {userResult[1],-30} || {userResult[2],-20}");
             }
         }
-        public static void ClearResults() => File.Delete(resultFilePath);
+        public static void ClearResults() => File.WriteAllText(resultFilePath, string.Empty);
     }
 }
