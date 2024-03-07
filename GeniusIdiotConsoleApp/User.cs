@@ -1,9 +1,4 @@
-﻿/*
-    В качестве бонусного задания, можно немного разделить логику работы программы.
-    Выделить класс для работы с файловой системой и класс для работы с консолью(опционально)
-*/
-
-namespace GeniusIdiotConsoleApp
+﻿namespace GeniusIdiotConsoleApp
 {
     public class User
     {
@@ -23,6 +18,11 @@ namespace GeniusIdiotConsoleApp
             this.CountRightAnswers = CountRightAnswers;
             this.Diagnosis = Diagnosis;
         }
-        public void IncreaseRightAnswers() => CountRightAnswers++;               
+        public void IncreaseRightAnswers() => CountRightAnswers++;
+        public void ResetResults()
+        {
+            CountRightAnswers = 0;
+            Diagnosis = "Идиот";
+        }
     }
 }

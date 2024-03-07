@@ -43,13 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="QuestionsStorage.cs" />
-    <Compile Include="ResultTable.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserStorage.cs" />
   </ItemGroup>

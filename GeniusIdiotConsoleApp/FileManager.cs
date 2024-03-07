@@ -1,12 +1,10 @@
 ﻿using System.IO;
 
-/*
-    В качестве бонусного задания, можно немного разделить логику работы программы.
-    Выделить класс для работы с файловой системой и класс для работы с консолью(опционально)
-*/
-
 namespace GeniusIdiotConsoleApp
 {
+    /// <summary>
+    /// Статический класс для работы с файловой системой
+    /// </summary>
     public static class FileManager
     {
         public static void Append(string filePath, string content)

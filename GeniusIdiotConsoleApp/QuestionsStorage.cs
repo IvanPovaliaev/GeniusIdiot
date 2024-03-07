@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 
-/*
-    В качестве бонусного задания, можно немного разделить логику работы программы.
-    Выделить класс для работы с файловой системой и класс для работы с консолью(опционально)
-*/
-
 namespace GeniusIdiotConsoleApp
 {
+    /// <summary>
+    /// Статический класс-хранилище вопросов
+    /// </summary>
     public static class QuestionsStorage
     {
         public static List<Question> GetQuestions()
