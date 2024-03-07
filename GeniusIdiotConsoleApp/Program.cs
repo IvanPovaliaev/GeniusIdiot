@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /*
-    Сделать хранение результатов игры.
-    Результаты хранятся даже после перезапуска приложения.
-    Сделать возможность отображения всех результатов тестирования в формате таблицы с заголовком:
-    ФИО кол-во правильных ответ Диагноз.
+    Прочитать про var и использовать в проекте.
 */
 
 namespace GeniusIdiotConsoleApp
@@ -33,7 +30,7 @@ namespace GeniusIdiotConsoleApp
             diagnoses[4] = "Талант";
             diagnoses[5] = "Гений";
             //Доп. задача №1: правило постановки диагноза
-            int percentRightAnswers = 100 * countRigthAnswers / countQuestions;
+            var percentRightAnswers = 100 * countRigthAnswers / countQuestions;
             if (percentRightAnswers < 10) return diagnoses[0];
             if (percentRightAnswers < 30) return diagnoses[1];
             if (percentRightAnswers < 50) return diagnoses[2];
@@ -41,54 +38,71 @@ namespace GeniusIdiotConsoleApp
             if (percentRightAnswers < 90) return diagnoses[4];
             return diagnoses[5];
         } 
+        static void StartTest(string username)
+        {
+            Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
+            var questions = GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов          
+            var countRigthAnswers = 0;
+            var countQuestions = questions.Count(); //Для доп. задачи определяем количество вопросов
+
+            for (int i = 0; i < countQuestions; i++)
+            {
+                Console.WriteLine($"Вопрос №{i + 1}");
+                Console.WriteLine($"{questions[i].QuestionText}");
+                var userAnswer = Console.ReadLine();
+                if (int.TryParse(userAnswer, out _)) //добавил для случая некорректного ввода ответа
+                {
+                    if (int.Parse(userAnswer) == questions[i].Answer) countRigthAnswers++;
+                }
+            }
+
+            var diagnosis = GetDiagnosis(countRigthAnswers, countQuestions);
+
+            Console.WriteLine($"Пользователь {username}");
+            Console.WriteLine($"Количество правильных ответов: {countRigthAnswers}");
+            Console.WriteLine($"Ваш диагноз: {diagnosis}");
+
+            ResultTable.SaveResult(username, countRigthAnswers, diagnosis); //сохранение результатов в отдельный файл
+        }
+        /// <summary>
+        /// Возвращает булевое значение о повторе теста
+        /// </summary>
+        static bool GetUserRepeatAnswer()
+        {
+            var testRepeat = true; //переменная для повтора теста
+            while (true) //цикл вопроса о повторении
+            {
+                var userRepeatAnswer = Console.ReadLine().ToLower();
+                if (userRepeatAnswer != "да" && userRepeatAnswer != "нет")
+                {
+                    Console.WriteLine("Неверные входные данные (Введите да/нет)");
+                    continue;
+                }
+                if (userRepeatAnswer == "нет") testRepeat = false;
+                break;
+            }
+            return testRepeat;
+        }
 
         static void Main()
         {
             Console.WriteLine("Введите имя пользователя:");
-            string username = Console.ReadLine();
-            bool testRepeat = true; //переменная для повтора теста
+            var username = Console.ReadLine();
             
             //цикл прохождения теста
-            while (testRepeat)
+            while (true)
             {
-                var questions = GetQuestions().Shuffle().ToList(); //Сразу перемешиваем список вопросов            
-
-                int countRigthAnswers = 0;
-                int countQuestions = questions.Count(); //Для доп. задачи определяем количество вопросов
-
-                for (int i = 0; i < countQuestions; i++)
+                StartTest(username);
+                Console.WriteLine("\nХотите посмотреть таблицу результатов? (Введите да/нет)");
+                if (GetUserRepeatAnswer())
                 {
-                    Console.WriteLine($"Вопрос №{i + 1}");
-                    Console.WriteLine($"{questions[i].QuestionText}");
-                    int userAnswer = int.Parse(Console.ReadLine());
-                    if (userAnswer == questions[i].Answer) countRigthAnswers++;
+                    ResultTable.ShowResults();
+                    Console.WriteLine("\nХотите очистить таблицу результатов? (Введите да/нет)");
+                    if(GetUserRepeatAnswer()) ResultTable.ClearResults();                    
                 }
-
-                var diagnosis = GetDiagnosis(countRigthAnswers, countQuestions);
-
-                Console.WriteLine($"Пользователь {username}");
-                Console.WriteLine($"Количество правильных ответов: {countRigthAnswers}");
-                Console.WriteLine($"Ваш диагноз: {diagnosis}");
-
-                ResultTable.SaveResult(username, countRigthAnswers, diagnosis); //сохранение результатов в отдельный файл
-                Console.WriteLine("\nХотите посмотреть таблицу результатов? (Если да, то введите \"да\". Иначе - любую иную фразу)");
-                if (Console.ReadLine().ToLower() == "да") ResultTable.ShowResults();
 
                 Console.WriteLine("\nТест завершён. Хотите пройти тест заново?(Введите да/нет)");
-                
-                //цикл вопроса о повторении
-                while (true) 
-                {
-                    string userRepeatAnswer = Console.ReadLine().ToLower();
-                    if (userRepeatAnswer != "да" && userRepeatAnswer != "нет")
-                    {
-                        Console.WriteLine("Неверные входные данные (Введите да/нет)");
-                        continue;
-                    }
-                    if (userRepeatAnswer == "нет") testRepeat = false;
-                    else Console.Clear(); //в случае повтора теста решил очистить консоль, чтобы нельзя было смотреть на введенные ответы.)
-                    break;
-                }
+                if (!GetUserRepeatAnswer()) break;               
             }
         }
     }

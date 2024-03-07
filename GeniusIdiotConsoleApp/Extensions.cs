@@ -18,7 +18,7 @@ namespace GeniusIdiotConsoleApp
             while (inputList.Count > 0)
             {
                 var random = new Random();
-                int randomIndex = random.Next(0, inputList.Count);
+                var randomIndex = random.Next(0, inputList.Count);
                 outputList.Add(inputList[randomIndex]);
                 inputList.RemoveAt(randomIndex);
             }

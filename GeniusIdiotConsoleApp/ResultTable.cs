@@ -6,19 +6,18 @@ namespace GeniusIdiotConsoleApp
     public static class ResultTable
     {
         private static string resultDirPath { get; } = @".\TestResults";
-        private static  DirectoryInfo resultDirectory { get; } = new DirectoryInfo(resultDirPath);
+        private static DirectoryInfo resultDirectory { get; } = new DirectoryInfo(resultDirPath);
         private static string resultFileName { get; } = @"TestResults.txt";
         private static string resultFilePath { get; } = resultDirPath + @"\" + resultFileName;
         private static void CreateResults()
         {
             if (!resultDirectory.Exists) resultDirectory.Create();
         }
-
         public static void SaveResult(string username, int countRigthAnswers, string diagnosis)
         {
             CreateResults();
-            string result = $"{username}|||||{countRigthAnswers}|||||{diagnosis}";
-            using (StreamWriter sw = new StreamWriter(resultFilePath, true, System.Text.Encoding.Default))
+            var result = $"{username}|||||{countRigthAnswers}|||||{diagnosis}";
+            using (var sw = new StreamWriter(resultFilePath, true, System.Text.Encoding.Default))
             {
                 sw.WriteLine(result);
             }
@@ -36,7 +35,6 @@ namespace GeniusIdiotConsoleApp
                 Console.WriteLine($"|| {userResult[0],-15} || {userResult[1],-30} || {userResult[2],-20}");
             }
         }
-        public static void ClearResults() => File.Delete(resultFilePath);
-
+        public static void ClearResults() => File.WriteAllText(resultFilePath, string.Empty);
     }
 }
